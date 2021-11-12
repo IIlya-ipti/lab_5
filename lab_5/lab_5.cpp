@@ -97,7 +97,9 @@ node* delete_node(int num, node*nd) {
 }
 void delete_node_tree(Binarytree* tree, int num) {
 	delete_node(num, tree->first);
-	tree->nodes = tree->first->nodes + 1;
+	if (tree->first != NULL) {
+		tree->nodes = tree->first->nodes + 1;
+	}
 }
 void PrintBinaryTree(Binarytree* tree) {
 	if (tree->first == NULL) {
@@ -133,12 +135,7 @@ void DeleteTree(Binarytree* tree) {
 int main()
 {
 	Binarytree tree;
-	add_node(2, &tree);
-	add_node(3, &tree);
-	add_node(1, &tree);
-	add_node(4, &tree);
-	add_node(5, &tree);
-	add_node(0, &tree);
+
 	PrintBinaryTree(&tree);
 	delete_node_tree(&tree, 5);
 	cout << endl;
