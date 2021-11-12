@@ -146,19 +146,15 @@ void PrintBinaryTree(Binarytree* tree) {
 	for (int i = 0; i < 2*tree->nodes; i++) {
 		matrix[i] = -1;
 	}
-	int* ma = new int[tree->nodes];
-	ma[0] = 0;
 	matrix[0] = 0;
 	for (int i = 0; i < tree->nodes; i++) {
 		if (Stack[i]->left) {
 			Stack[++index] = Stack[i]->left;
-			ma[index] = ma[i] + 1;
 			matrix[2 * i + 1] = index;
 			
 		}
 		if (Stack[i]->right) {
 			Stack[++index] = Stack[i]->right;
-			ma[index] = ma[i] + 1;
 			matrix[2 * i + 2] = index;
 		}
 	}
