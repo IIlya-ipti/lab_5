@@ -6,7 +6,7 @@ struct Binarytree;
 void add_node(int num, Binarytree* tree);// добавление узла в бинарное дерево
 void PrintBinaryTree(Binarytree*); // вывести на экран бинарное дерево поиском в глубину
 void DeleteTree(Binarytree*); // удалить дерево
-void delete_node_tree(Binarytree* tree, int num);// удалить узел дерева
+void delete_node_tree(Binarytree* &tree, int num);// удалить узел дерева
 
 struct node {
 	node* left = NULL;
@@ -95,31 +95,93 @@ node* delete_node(int num, node*nd) {
 	return nd;
 	
 }
-void delete_node_tree(Binarytree* tree, int num) {
+void delete_node_tree(Binarytree*& tree, int num) {
 	delete_node(num, tree->first);
 	if (tree->first != NULL) {
 		tree->nodes = tree->first->nodes + 1;
 	}
 }
+void PrintMatrix(int** m, int n) {
+	printf("  ");
+	for (int i = 0; i < n; i++) {
+		printf("%2d", i);
+	}
+	printf("\n");
+	for (int i = 0; i < n; i++) {
+		printf("%2d", i);
+		for (int j = 0; j < n; j++) {
+			printf("%2d", m[i][j]);
+		}
+		printf("\n");
+	}
+}
+void print(int s, int n,int h) {
+	if (n == 0)return;
+	for (int i = 0; i < (h - n)/n; i++) {
+		printf(" ");
+	}
+	printf("%d", s);
+	for (int i = 0; i < (h - n) / n; i++) {
+		printf(" ");
+	}
+}
+void print(int n, int h) {
+	if (n == 0)return;
+	for (int i = 0; i < (h - n) / n ; i++) {
+		printf(" ");
+	}
+	printf(" ");
+	for (int i = 0; i < (h - n) / n ; i++) {
+		printf(" ");
+	}
+}
 void PrintBinaryTree(Binarytree* tree) {
-	if (tree->first == NULL) {
+	if (tree == NULL || tree->first == NULL) {
 		return;
 	}
+	int* matrix = new int [tree->nodes*2];
 	node** Stack = new node * [tree->nodes];
 	Stack[0] = tree->first;
 	int index = 0;
+	for (int i = 0; i < 2*tree->nodes; i++) {
+		matrix[i] = -1;
+	}
+	int* ma = new int[tree->nodes];
+	ma[0] = 0;
+	matrix[0] = 0;
 	for (int i = 0; i < tree->nodes; i++) {
-		printf("%d %d, diff = %2d, hight = %2d\n", Stack[i]->item, i + 1, Stack[i]->heighe_difference,Stack[i]->nodes);
 		if (Stack[i]->left) {
 			Stack[++index] = Stack[i]->left;
+			ma[index] = ma[i] + 1;
+			matrix[2 * i + 1] = index;
+			
 		}
 		if (Stack[i]->right) {
 			Stack[++index] = Stack[i]->right;
+			ma[index] = ma[i] + 1;
+			matrix[2 * i + 2] = index;
 		}
 	}
+	index = 0;
+	int stop = 1;
+	int k = 1;
+	while (index < 2*tree->nodes) {
+		if (matrix[index] == -1) {
+			print(k, 10*tree->nodes );
+		}
+		else {
+			print(Stack[matrix[index]]->item, k, 10*tree->nodes);
+		}
+		index += 1;
+		if (index == stop) {
+			printf("\n");
+			k *= 2;
+			stop =stop + k;
+		}
+
+	}	
 	delete[]Stack;
 }
-
 void Deletenodes(node*nd) {
 	if (nd != NULL) {
 		Deletenodes(nd->left);
@@ -134,12 +196,19 @@ void DeleteTree(Binarytree* tree) {
 }
 int main()
 {
-	Binarytree tree;
+	Binarytree* tree = new Binarytree;
+	add_node(1, tree);
+	add_node(-1, tree);
+	add_node(2, tree);
+	add_node(3, tree);
+	add_node(5, tree);
+	add_node(0, tree);
+	add_node(-2, tree);
+	add_node(-10, tree);
+	delete_node_tree(tree, 1);
+	PrintBinaryTree(tree);
 
-	PrintBinaryTree(&tree);
-	delete_node_tree(&tree, 5);
 	cout << endl;
-	PrintBinaryTree(&tree);
 
 	return 0;
 }
